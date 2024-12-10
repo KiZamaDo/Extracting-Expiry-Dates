@@ -198,6 +198,7 @@ pytesseract.pytesseract.tesseract_cmd = "/app/.apt/usr/bin/tesseract"
 tessdata_dir = "/app/.apt/usr/share/tesseract-ocr/5/tessdata"
 
 # Function to extract expiry date
+# Function to extract expiry date
 def extract_expiry_date(content):
     if pd.isna(content):
         return None
@@ -265,6 +266,7 @@ def convert_date(date_str):
         return None  # Return None if date is invalid
 
     return None  # If no match, return None
+
 
 # Route for the home page
 @app.route('/')
