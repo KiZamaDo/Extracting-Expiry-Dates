@@ -190,12 +190,11 @@ import os
 
 app = Flask(__name__)
 
-# Set Tesseract-OCR executable path (update this to correct Tesseract installation)
-os.environ["TESSDATA_PREFIX"] = "/app/.apt/usr/share/tesseract-ocr/5/"
+# Set Tesseract-OCR executable path (update this to your Tesseract installation)
+pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"  # Adjust as needed
 
-# Set tessdata directory (use the provided path)
-pytesseract.pytesseract.tesseract_cmd = "tesseract"
-
+# Set the tessdata directory path
+tessdata_dir = "/app/.apt/usr/share/tesseract-ocr/5/tessdata"
 
 # Function to extract expiry date
 def extract_expiry_date(content):
@@ -296,7 +295,7 @@ def upload_image():
         img = Image.open(file)
 
         # Extract text using pytesseract (include tessdata dir)
-        extracted_text = pytesseract.image_to_string(img, config=f'--tessdata-dir {tessdata_dir}')
+        extracted_text = pytesseract.image_to_string(img, config=f'--tessdata-dir "{tessdata_dir}"')
 
         # Extract expiry date from the text
         expiry_date = extract_expiry_date(extracted_text)
@@ -333,3 +332,4 @@ def upload_image():
 
 if __name__ == '__main__':
     app.run()
+
