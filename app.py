@@ -190,7 +190,7 @@ import pandas as pd
 app = Flask(__name__)
 
 # Set Tesseract-OCR executable path (update this to correct Tesseract installation)
-pytesseract.pytesseract.tesseract_cmd = r'/app/Tesseract-OCR/tesseract'
+os.environ["TESSDATA_PREFIX"] = "/app/.apt/usr/share/tesseract-ocr/5/"
 
 # Set tessdata directory (use the provided path)
 tessdata_dir = r'/app/Tesseract-OCR/tessdata'
