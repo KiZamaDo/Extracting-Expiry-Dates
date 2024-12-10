@@ -190,10 +190,10 @@ import os
 
 app = Flask(__name__)
 
-# Set the correct Tesseract command path
+# Set the correct Tesseract command path for Heroku
 pytesseract.pytesseract.tesseract_cmd = "/app/.apt/usr/bin/tesseract"
 
-# Set the correct tessdata directory path
+# Set the correct tessdata directory path for Heroku
 tessdata_dir = "/app/.apt/usr/share/tesseract-ocr/5/tessdata"
 
 # Function to extract expiry date
@@ -281,6 +281,7 @@ def upload_form():
         </html>
     '''
 
+
 # Route to handle image upload and processing
 @app.route('/upload', methods=['POST'])
 def upload_image():
@@ -332,4 +333,5 @@ def upload_image():
         return f"Error: {str(e)}", 500
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
+
