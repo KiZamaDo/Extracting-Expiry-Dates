@@ -1,185 +1,3 @@
-# from flask import Flask, request, render_template
-# from PIL import Image
-# import pytesseract
-# import re
-# import pandas as pd
-
-# app = Flask(__name__)
-
-# # Path to Tesseract-OCR executable (Update this path accordingly)
-# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-
-# # Function to extract expiry date
-# def extract_expiry_date(content):
-#     if pd.isna(content):
-#         return None
-
-#     # Convert content to string for processing
-#     content = str(content)
-
-#     # Define patterns for matching phrases and dates
-#     patterns = [
-#         r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\d{2}\d{2})",  # ddmmyy (6 digits)
-#         r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}/\d{2}/\d{2})",  # dd/mm/yy
-#         r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\s\w+\s\d{4})",  # dd NAME_OF_THE_MONTH yyyy
-#         r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\w+\d{4})",      # ddNAME_OF_THE_MONTHyyyy
-#         r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{4}\s\w+\s\d{2})",  # yyyy NAME_OF_THE_MONTH dd
-#         r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}/\d{4})"         # mm/yyyy
-#     ]
-
-#     # Loop through patterns to find a match
-#     for pattern in patterns:
-#         match = re.search(pattern, content, flags=re.IGNORECASE)
-#         if match:
-#             return match.group(2)  # Return the matched date (group 2 contains the date)
-
-#     # Return None if no date is found
-#     return None
-
-# # Route for the home page
-# @app.route('/')
-# def upload_form():
-#     return '''
-#         <html>
-#         <body>
-#             <h1>Upload an Image to Extract Expiry Date</h1>
-#             <form action="/upload" method="post" enctype="multipart/form-data">
-#                 <input type="file" name="image">
-#                 <input type="submit" value="Upload">
-#             </form>
-#         </body>
-#         </html>
-#     '''
-
-# # Route to handle image upload and OCR
-# @app.route('/upload', methods=['POST'])
-# def upload_image():
-#     if 'image' not in request.files:
-#         return "No file uploaded", 400
-    
-#     file = request.files['image']
-#     if file.filename == '':
-#         return "No file selected", 400
-
-#     try:
-#         # Open the uploaded image
-#         img = Image.open(file)
-
-#         # Extract text using pytesseract
-#         extracted_text = pytesseract.image_to_string(img)
-
-#         # Extract expiry date from the text
-#         expiry_date = extract_expiry_date(extracted_text)
-
-#         # Return the extracted date or a message if no date is found
-#         if expiry_date:
-#             return f"<h1>Expiry Date Found: {expiry_date}</h1>"
-#         else:
-#             return "<h1>No Expiry Date Found</h1>"
-
-#     except Exception as e:
-#         return f"Error: {str(e)}", 500
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
-
-
-# from flask import Flask, request, render_template_string
-# from PIL import Image
-# import pytesseract
-# import re
-# import pandas as pd
-
-# app = Flask(__name__)
-
-# # Path to Tesseract-OCR executable (Update this path accordingly)
-# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-
-# # Function to extract expiry date
-# def extract_expiry_date(content):
-#     if pd.isna(content):
-#         return None
-
-#     # Convert content to string for processing
-#     content = str(content)
-
-#     # Define patterns for matching phrases and dates
-    # patterns = [
-    #     r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\d{2}\d{2})",  # ddmmyy (6 digits)
-    #     r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}/\d{2}/\d{2})",  # dd/mm/yy
-    #     r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\s\w+\s\d{4})",  # dd NAME_OF_THE_MONTH yyyy
-    #     r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\w+\d{4})",      # ddNAME_OF_THE_MONTHyyyy
-    #     r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{4}\s\w+\s\d{2})",  # yyyy NAME_OF_THE_MONTH dd
-    #     r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}/\d{4})"         # mm/yyyy
-    # ]
-
-#     # Loop through patterns to find a match
-#     for pattern in patterns:
-#         match = re.search(pattern, content, flags=re.IGNORECASE)
-#         if match:
-#             return match.group(2)  # Return the matched date (group 2 contains the date)
-
-#     # Return None if no date is found
-#     return None
-
-# # Route for the home page
-# @app.route('/')
-# def upload_form():
-#     return '''
-#         <html>
-#         <body>
-#             <h1>Upload an Image to Extract Text and Expiry Date</h1>
-#             <form action="/upload" method="post" enctype="multipart/form-data">
-#                 <input type="file" name="image">
-#                 <input type="submit" value="Upload">
-#             </form>
-#         </body>
-#         </html>
-#     '''
-
-# # Route to handle image upload and processing
-# @app.route('/upload', methods=['POST'])
-# def upload_image():
-#     if 'image' not in request.files:
-#         return "No file uploaded", 400
-    
-#     file = request.files['image']
-#     if file.filename == '':
-#         return "No file selected", 400
-
-#     try:
-#         # Open the uploaded image
-#         img = Image.open(file)
-
-#         # Extract text using pytesseract
-#         extracted_text = pytesseract.image_to_string(img)
-
-#         # Extract expiry date from the text
-#         expiry_date = extract_expiry_date(extracted_text)
-
-#         # Render the result on the same page
-#         html_template = f"""
-#         <html>
-#         <body>
-#             <h1>OCR and Expiry Date Extraction Result</h1>
-#             <h3>Uploaded Image Text:</h3>
-#             <p>{extracted_text}</p>
-#             <h3>Expiry Date Found:</h3>
-#             <p>{expiry_date if expiry_date else "No Expiry Date Found"}</p>
-#             <br>
-#             <a href="/">Go Back</a>
-#         </body>
-#         </html>
-#         """
-#         return render_template_string(html_template)
-
-#     except Exception as e:
-#         return f"Error: {str(e)}", 500
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
-
-
 from flask import Flask, request, render_template_string
 from PIL import Image
 import pytesseract
@@ -209,6 +27,8 @@ def extract_expiry_date(content):
         r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\s\w+\s\d{4})",  # dd NAME_OF_THE_MONTH yyyy
         r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}/\d{2}/\d{4})",  # dd/mm/yyyy
         r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\d{2}\d{4})",  # ddmmyyyy (8 digits)
+        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\s\w+\s\d{2})",  # dd MMM yy
+        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}/\d{2}/\d{2})"   # dd/mm/yy
     ]
 
     # Loop through patterns to find a match
@@ -236,6 +56,14 @@ def convert_date(date_str):
         # Match and convert ddmmyyyy to dd/mm/yyyy
         if re.match(r"^\d{8}$", date_str):
             return datetime.strptime(date_str, "%d%m%Y").strftime("%d/%m/%y")
+
+        # Match and convert dd MMM yy to dd/mm/yy
+        if re.match(r"^\d{2}\s\w{3}\s\d{2}$", date_str):
+            return datetime.strptime(date_str, "%d %b %y").strftime("%d/%m/%y")
+
+        # Match and convert dd/mm/yy to dd/mm/yy (no change needed)
+        if re.match(r"^\d{2}/\d{2}/\d{2}$", date_str):
+            return datetime.strptime(date_str, "%d/%m/%y").strftime("%d/%m/%y")
 
     except ValueError:
         return None  # Return None if date is invalid
@@ -311,5 +139,3 @@ def upload_image():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
