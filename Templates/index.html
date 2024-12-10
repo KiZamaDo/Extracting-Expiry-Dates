@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OCR Image Text Extraction</title>
+    <script>
+      async function uploadImage(event) {
+        event.preventDefault();
+        const formData = new FormData(document.getElementById("uploadForm"));
+        const response = await fetch("/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          document.getElementById("output").innerText =
+            result.text || "No text found!";
+        } else {
+          const error = await response.json();
+          document.getElementById("output").innerText =
+            error.error || "An error occurred.";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Upload an Image for OCR</h1>
+    <form id="uploadForm" onsubmit="uploadImage(event)">
+      <input type="file" name="image" accept="image/*" required />
+      <button type="submit">Extract Text</button>
+    </form>
+    <h3>Extracted Text:</h3>
+    <pre
+      id="output"
+      style="background-color: #f3f3f3; padding: 10px; border: 1px solid #ccc"
+    ></pre>
+  </body>
+</html>
