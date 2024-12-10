@@ -193,7 +193,8 @@ app = Flask(__name__)
 os.environ["TESSDATA_PREFIX"] = "/app/.apt/usr/share/tesseract-ocr/5/"
 
 # Set tessdata directory (use the provided path)
-tessdata_dir = r'/app/Tesseract-OCR/tessdata'
+pytesseract.pytesseract.tesseract_cmd = "tesseract"
+
 
 # Function to extract expiry date
 def extract_expiry_date(content):
