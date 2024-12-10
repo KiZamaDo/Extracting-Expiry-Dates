@@ -22,8 +22,12 @@ def extract_expiry_date(content):
     # Convert content to string for processing
     content = str(content)
 
-    # Remove extra spaces or newlines that could interfere with regex matching
-    content = re.sub(r'\s+', ' ', content)
+    # Clean up OCR artifacts
+    content = re.sub(r'\s+', ' ', content)  # Remove extra spaces and newlines
+    content = content.strip()
+
+    # Print the cleaned content for debugging
+    print("Cleaned Content:", content)
 
     # Define patterns for matching expiry date phrases and dates
     patterns = [
