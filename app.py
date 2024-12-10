@@ -4,7 +4,6 @@ import pytesseract
 import re
 from datetime import datetime
 import pandas as pd
-import os
 
 app = Flask(__name__)
 
@@ -22,12 +21,12 @@ def extract_expiry_date(content):
     # Convert content to string for processing
     content = str(content)
 
-    # Clean up OCR artifacts
+    # Clean up OCR artifacts by removing extra spaces and newlines
     content = re.sub(r'\s+', ' ', content)  # Remove extra spaces and newlines
     content = content.strip()
 
     # Print the cleaned content for debugging
-    print("Cleaned Content:", content)
+    print("Cleaned OCR Content:", content)
 
     # Define patterns for matching expiry date phrases and dates
     patterns = [
@@ -42,6 +41,7 @@ def extract_expiry_date(content):
     for pattern in patterns:
         match = re.search(pattern, content, flags=re.IGNORECASE)
         if match:
+            print(f"Pattern matched: {pattern} - Found Date: {match.group(2)}")  # Log matched pattern and date
             return match.group(2)  # Return the matched date (group 2 contains the date)
 
     return None  # Return None if no date is found
@@ -112,7 +112,7 @@ def upload_image():
         extracted_text = pytesseract.image_to_string(img, config=f'--tessdata-dir "{tessdata_dir}"')
 
         # Print the extracted text for debugging
-        print("Extracted Text:", extracted_text)
+        print("Extracted OCR Text:", extracted_text)
 
         # Extract expiry date from the text
         expiry_date = extract_expiry_date(extracted_text)
