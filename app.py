@@ -190,14 +190,12 @@ import os
 
 app = Flask(__name__)
 
-
 # Set the correct Tesseract command path
 pytesseract.pytesseract.tesseract_cmd = "/app/.apt/usr/bin/tesseract"
 
 # Set the correct tessdata directory path
 tessdata_dir = "/app/.apt/usr/share/tesseract-ocr/5/tessdata"
 
-# Function to extract expiry date
 # Function to extract expiry date
 def extract_expiry_date(content):
     if pd.isna(content):
