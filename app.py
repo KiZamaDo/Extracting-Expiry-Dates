@@ -188,12 +188,10 @@ from datetime import datetime
 import pandas as pd
 import os
 
-app = Flask(__name__)
+# Set the correct Tesseract command path
+pytesseract.pytesseract.tesseract_cmd = "/app/.apt/usr/bin/tesseract"
 
-# Set Tesseract-OCR executable path (update this to your Tesseract installation)
-pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"  # Adjust as needed
-
-# Set the tessdata directory path
+# Set the correct tessdata directory path
 tessdata_dir = "/app/.apt/usr/share/tesseract-ocr/5/tessdata"
 
 # Function to extract expiry date
@@ -332,4 +330,3 @@ def upload_image():
 
 if __name__ == '__main__':
     app.run()
-
