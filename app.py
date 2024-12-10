@@ -206,12 +206,9 @@ def extract_expiry_date(content):
 
     # Define patterns for matching phrases and dates
     patterns = [
-        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\d{2}\d{2})",  # ddmmyy (6 digits)
-        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}/\d{2}/\d{2})",  # dd/mm/yy
         r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\s\w+\s\d{4})",  # dd NAME_OF_THE_MONTH yyyy
-        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\w+\d{4})",      # ddNAME_OF_THE_MONTHyyyy
-        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{4}\s\w+\s\d{2})",  # yyyy NAME_OF_THE_MONTH dd
-        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}/\d{4})"         # mm/yyyy
+        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}/\d{2}/\d{4})",  # dd/mm/yyyy
+        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\d{2}\d{4})",  # ddmmyyyy (8 digits)
     ]
 
     # Loop through patterns to find a match
@@ -228,37 +225,17 @@ def convert_date(date_str):
     date_str = date_str.replace("NO", "NOV")
 
     try:
-        # Match and convert ddmmyy (6 digits) to dd/mm/yyyy
-        if re.match(r"^\d{6}$", date_str):
-            return datetime.strptime(date_str, "%d%m%y").strftime("%d/%m/%Y")
-
-        # Match and convert d/mm/yy to dd/mm/yyyy
-        if re.match(r"^\d{1}/\d{2}/\d{2}$", date_str):
-            return datetime.strptime(date_str, "%d/%m/%y").strftime("%d/%m/%Y")
-
-        # Match and convert dd/mm/yy to dd/mm/yyyy
-        if re.match(r"^\d{2}/\d{2}/\d{2}$", date_str):
-            return datetime.strptime(date_str, "%d/%m/%y").strftime("%d/%m/%Y")
-
         # Match and convert dd NAME_OF_THE_MONTH yyyy to dd/mm/yyyy
         if re.match(r"^\d{2}\s\w+\s\d{4}$", date_str):
-            return datetime.strptime(date_str, "%d %b %Y").strftime("%d/%m/%Y")
+            return datetime.strptime(date_str, "%d %b %Y").strftime("%d/%m/%y")
 
-        # Match and convert d NAME_OF_THE_MONTH yyyy to dd/mm/yyyy
-        if re.match(r"^\d\s\w+\s\d{4}$", date_str):
-            return datetime.strptime(date_str, "%d %b %Y").strftime("%d/%m/%Y")
+        # Match and convert dd/mm/yyyy to dd/mm/yyyy (no change needed)
+        if re.match(r"^\d{2}/\d{2}/\d{4}$", date_str):
+            return datetime.strptime(date_str, "%d/%m/%Y").strftime("%d/%m/%y")
 
-        # Match and convert ddNAME_OF_THE_MONTHyyyy to dd/mm/yyyy
-        if re.match(r"^\d{2}\w{3}\d{4}$", date_str):
-            return datetime.strptime(date_str, "%d%b%Y").strftime("%d/%m/%Y")
-
-        # Match and convert yyyy NAME_OF_THE_MONTH dd to dd/mm/yyyy
-        if re.match(r"^\d{4}\s\w+\s\d{2}$", date_str):
-            return datetime.strptime(date_str, "%Y %b %d").strftime("%d/%m/%Y")
-
-        # Match and convert mm/yyyy to mm/yyyy (no change needed)
-        if re.match(r"^\d{2}/\d{4}$", date_str):
-            return date_str  # Already in the correct format
+        # Match and convert ddmmyyyy to dd/mm/yyyy
+        if re.match(r"^\d{8}$", date_str):
+            return datetime.strptime(date_str, "%d%m%Y").strftime("%d/%m/%y")
 
     except ValueError:
         return None  # Return None if date is invalid
@@ -334,4 +311,5 @@ def upload_image():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
