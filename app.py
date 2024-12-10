@@ -186,6 +186,7 @@ import pytesseract
 import re
 from datetime import datetime
 import pandas as pd
+import os
 
 app = Flask(__name__)
 
