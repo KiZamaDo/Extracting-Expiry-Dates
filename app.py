@@ -188,6 +188,9 @@ from datetime import datetime
 import pandas as pd
 import os
 
+app = Flask(__name__)
+
+
 # Set the correct Tesseract command path
 pytesseract.pytesseract.tesseract_cmd = "/app/.apt/usr/bin/tesseract"
 
