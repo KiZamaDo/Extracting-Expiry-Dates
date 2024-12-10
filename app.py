@@ -22,11 +22,14 @@ def extract_expiry_date(content):
     # Convert content to string for processing
     content = str(content)
 
-    # Define patterns for matching phrases and dates
+    # Remove extra spaces or newlines that could interfere with regex matching
+    content = re.sub(r'\s+', ' ', content)
+
+    # Define patterns for matching expiry date phrases and dates
     patterns = [
-        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\s\w+\s\d{4})",  # dd NAME_OF_THE_MONTH yyyy
+        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\s\w+\s\d{4})",  # dd MMM yyyy
         r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}/\d{2}/\d{4})",  # dd/mm/yyyy
-        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\d{2}\d{4})",  # ddmmyyyy (8 digits)
+        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\d{2}\d{4})",  # ddmmyyyy
         r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\s\w+\s\d{2})",  # dd MMM yy
         r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}/\d{2}/\d{2})"   # dd/mm/yy
     ]
@@ -104,8 +107,14 @@ def upload_image():
         # Extract text using pytesseract (include tessdata dir)
         extracted_text = pytesseract.image_to_string(img, config=f'--tessdata-dir "{tessdata_dir}"')
 
+        # Print the extracted text for debugging
+        print("Extracted Text:", extracted_text)
+
         # Extract expiry date from the text
         expiry_date = extract_expiry_date(extracted_text)
+
+        # Print the extracted expiry date for debugging
+        print("Extracted Expiry Date:", expiry_date)
 
         # Standardize the expiry date
         standardized_date = convert_date(expiry_date) if expiry_date else None
