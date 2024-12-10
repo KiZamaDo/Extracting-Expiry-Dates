@@ -30,13 +30,12 @@ def extract_expiry_date(content):
 
     # Define patterns for matching expiry date phrases and dates
     patterns = [
-        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\s\w+\s\d{4})",  # dd MMM yyyy
-        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}/\d{2}/\d{4})",  # dd/mm/yyyy
-        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\d{2}\d{4})",  # ddmmyyyy
-        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\s\w+\s\d{2})",  # dd MMM yy
-        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}/\d{2}/\d{2})"   # dd/mm/yy
+        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\, Date \:\s|Exp\, Date \:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\s\w+\s\d{4})",  # dd MMM yyyy
+        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\, Date \:\s|Exp\, Date \:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}/\d{2}/\d{4})",  # dd/mm/yyyy
+        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\, Date \:\s|Exp\, Date \:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\d{2}\d{4})",  # ddmmyyyy
+        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\, Date \:\s|Exp\, Date \:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}\s\w+\s\d{2})",  # dd MMM yy
+        r"(EXP\s|Exp\. Date\s|Exp\. Date\:\s|Exp\, Date \:\s|Exp\, Date \:\s|Exp\. Date \:\s|BEST BEFORE\s|USED BY\s)(\d{2}/\d{2}/\d{2})"   # dd/mm/yy
     ]
-
     # Loop through patterns to find a match
     for pattern in patterns:
         match = re.search(pattern, content, flags=re.IGNORECASE)
